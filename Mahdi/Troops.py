@@ -53,6 +53,5 @@ class Dragon(Units):
         self.damage=100
         self.count=1
         self.deploy_state='notinDeck'
-e=Dragon()
-e.attributes()
+
 print(e.hp)
