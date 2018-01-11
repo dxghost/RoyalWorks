@@ -15,34 +15,35 @@ class Units:
         self.elixir_cost = 'X'
         self.counts = [i for i in range(1,15)]
         self.count = 'X'
-        #self.hitpoints = [i for i in range(10,3000)]
-        #self.hitpoint = 'X'
+        self.hitpoints = [i for i in range(10,3000)]
         self.hp='X'
         self.damages=[i for i in range(10,1000)]
         self.damage='X'
         self.life_states=['Dead','Alive']
         self.life_state='X'
         self.deploy_states=['Deployed','inDeck','notinDeck']
-        self.deploy_state='X'
+        self.deploy_state = 'notinDeck'
+        self.attack_types = ['Melee','Ranged']
+        self.attack_type = 'X'
 
     def place_in_deck(self):
         self.deploy_state = 'inDeck'
     def deploy(self):
-        self.life_state='Alive'
+        self.life_state='Aliv   e'
         self.deploy_state = 'Deployed'
     def get_damage(self,value):
+        self.hp=self.hitpoint
         self.hp -= value
+        if self.hp ==0:
+            self.kill()
     def re_assign_hp(self):
         self.hp = self.hitpoint
     def kill(self):
-        if self.hitpoint==0:
-            self.life_state='Dead'
-            self.deploy_state='notinDeck'
-            self.re_assign_hp()
-
-
+        self.life_state='Dead'
+        self.deploy_state='notinDeck'
+        self.re_assign_hp()
 class Dragon(Units):
-    def attributes(self):
+    def attr(self):
         self.movement_type='Fly'
         self.shoot_type='Both'
         self.target_type='Any'
@@ -52,6 +53,24 @@ class Dragon(Units):
         self.hitpoint=600
         self.damage=100
         self.count=1
-        self.deploy_state='notinDeck'
+        self.attack_type ='Ranged'
+class Goblin(Units):
+    def attr(self):
+        self.movement_type='Walk'
+        self.shoot_type='Ground'
+        self.target_type='Any'
+        self.rarity_type='Common'
+        self.movement_speed=['Fast']
+        self.elixir_cost=2
+        self.hitpoint=60
+        self.damage=50
+        self.count=3
+        self.attack_type = 'Melee'
 
-print(e.hp)
+class Board:
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1]
+    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1]
+    [1, 0, 0, 'P', 'P', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'P', 'P', 0, 0, 1]
+    [1, 0, 0, 'P', 'P', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'P', 'P', 0, 0, 1]
+    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1]
