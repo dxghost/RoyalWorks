@@ -6,7 +6,7 @@ screen = pygame.display.set_mode((700, 700))
 background = pygame.draw.rect(screen, (0, 0, 0), (0, 0, 700, 700))
 
 SIZE = WIDTH, HEIGHT = 720, 480
-BACKGROUND_COLOR = pygame.Color('black')
+BACKGROUND_COLOR = pygame.Color('white')
 FPS = 60
 
 screen = pygame.display.set_mode(SIZE)
@@ -123,20 +123,6 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
-            elif event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_RIGHT:
-                    player.velocity.x = 1
-                elif event.key == pygame.K_LEFT:
-                    player.velocity.x = -1
-                elif event.key == pygame.K_DOWN:
-                    player.velocity.y = 1
-                elif event.key == pygame.K_UP:
-                    player.velocity.y = -1
-            elif event.type == pygame.KEYUP:
-                if event.key == pygame.K_RIGHT or event.key == pygame.K_LEFT:
-                    player.velocity.x = 0
-                elif event.key == pygame.K_DOWN or event.key == pygame.K_UP:
-                    player.velocity.y = 0
 
         all_sprites.update(dt)  # Calls the 'update' method on all sprites in the list (currently just the player).
         screen.fill(BACKGROUND_COLOR)
