@@ -253,23 +253,22 @@ class Checkwin(pygame.sprite.Sprite):
 
 
 class Helathbar:
-    def __init__(self):
-        self.x = 0
-        self.y = 0
-        self.color = (0, 0, 0)
-    def drawHB(self, n, ELH , Sc, x, y):
+    def __init__(self, ELH , Sc, x, y):
         self.x = x
         self.y = y
         self.x_var = Sc
-        self.Scale = n // self.x_var
-        self.ElpsHealth = ELH - n
+        self.ELH = ELH
 
+    def setHB(self, n):
+        self.n = n
+        self.Scale = self.n // self.x_var
+        self.ElpsHealth = self.ELH - self.n
 
         self.text = str(self.ElpsHealth).rjust(3)
         self.font = pygame.font.SysFont('Consolas', 10)
         pygame.draw.rect(screen, (0, 0, 0), (self.x, self.y, 60, 8))
-        pygame.draw.rect(screen, (255, 255, 255), (self.x +1, self.y +1, 58- self.Scale, 6))
-        screen.blit(self.font.render(self.text, True, (100, 100, 100)),(self.x +15, self.y-1))
+        pygame.draw.rect(screen, (255, 255, 255), (self.x + 1, self.y + 1, 58 - self.Scale, 6))
+        screen.blit(self.font.render(self.text, True, (100, 100, 100)), (self.x + 15, self.y - 1))
 
 
 def DrawBg():
@@ -333,12 +332,12 @@ def main():
 
 
     #Draw Health Bar
-    DHB_left = Helathbar()
-    DHB_Right = Helathbar()
-    DHB_Main = Helathbar()
-    DHB_left_En = Helathbar()
-    DHB_Right_En = Helathbar()
-    DHB_Main_En = Helathbar()
+    DHB_left = Helathbar(ELH= 1000,Sc= 17.5,x= 87,y= 440)
+    DHB_Right = Helathbar(ELH= 1000,Sc= 17.5,x= 355,y= 441)
+    DHB_Main = Helathbar(ELH= 2000,Sc= 35 ,x= 223,y= 501)
+    DHB_left_En = Helathbar(ELH= 1000,Sc= 17.5,x= 87,y= 70)
+    DHB_Right_En = Helathbar(ELH= 1000,Sc= 17.5,x= 356,y= 70)
+    DHB_Main_En = Helathbar(ELH= 1000,Sc= 17.5,x= 223,y= 0)
 
 
 
@@ -414,13 +413,15 @@ def main():
 
 
         #Draw Health Bar
-        DHB_left.drawHB(n= 500, ELH= 1000,Sc= 17.5,x= 87,y= 440 )
-        DHB_Right.drawHB(n= 500, ELH= 1000,Sc= 17.5,x= 355,y= 441 )
-        DHB_Main.drawHB(n= 2000, ELH= 2000,Sc= 35 ,x= 223,y= 501 )
+        DHB_left.setHB(400)
+        DHB_Right.setHB(500)
+        DHB_Main.setHB(600)
 
-        DHB_left_En.drawHB(n= 500, ELH= 1000,Sc= 17.5,x= 87,y= 70)
-        DHB_Right_En.drawHB(n= 500, ELH= 1000,Sc= 17.5,x= 356,y= 70 )
-        DHB_Main_En.drawHB(n= 500, ELH= 1000,Sc= 17.5,x= 223,y= 0 )
+        DHB_left_En.setHB(700)
+        DHB_Right_En.setHB(300)
+        DHB_Main_En.setHB(100)
+
+
         pygame.display.update()
 
 
