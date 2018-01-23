@@ -83,33 +83,6 @@ def drawTower():
     screen.blit(Enm_small_tower_2, (347, 80))
 
 
-def load_images():
-    """
-    Loads all images in directory. The directory must only contain images.
-
-    Args:
-        path: The relative or absolute path to the directory to load images from.
-
-    Returns:
-        List of images.
-    """
-    images = []
-    images.append(pygame.image.load("Assets\\chr_giant_out\\1_Down.png"))
-    images.append(pygame.image.load("Assets\\chr_giant_out\\2_Down.png"))
-    images.append(pygame.image.load("Assets\\chr_giant_out\\3_Down.png"))
-    images.append(pygame.image.load("Assets\\chr_giant_out\\4_Down.png"))
-    images.append(pygame.image.load("Assets\\chr_giant_out\\5_Down.png"))
-    images.append(pygame.image.load("Assets\\chr_giant_out\\6_Down.png"))
-    images.append(pygame.image.load("Assets\\chr_giant_out\\7_Down.png"))
-    images.append(pygame.image.load("Assets\\chr_giant_out\\8_Down.png"))
-    images.append(pygame.image.load("Assets\\chr_giant_out\\9_Down.png"))
-    images.append(pygame.image.load("Assets\\chr_giant_out\\10_Down.png"))
-    images.append(pygame.image.load("Assets\\chr_giant_out\\11_Down.png"))
-    images.append(pygame.image.load("Assets\\chr_giant_out\\12_Down.png"))
-
-
-    return images
-
 
 
 class AnimatedSprite(pygame.sprite.Sprite):
@@ -279,8 +252,24 @@ class Checkwin(pygame.sprite.Sprite):
 
 
 
+class Helathbar:
+    def __init__(self):
+        self.x = 0
+        self.y = 0
+        self.color = (0, 0, 0)
+    def drawHB(self, n, ELH , Sc, x, y):
+        self.x = x
+        self.y = y
+        self.x_var = Sc
+        self.Scale = n // self.x_var
+        self.ElpsHealth = ELH - n
 
 
+        self.text = str(self.ElpsHealth).rjust(3)
+        self.font = pygame.font.SysFont('Consolas', 10)
+        pygame.draw.rect(screen, (0, 0, 0), (self.x, self.y, 60, 8))
+        pygame.draw.rect(screen, (255, 255, 255), (self.x +1, self.y +1, 58- self.Scale, 6))
+        screen.blit(self.font.render(self.text, True, (100, 100, 100)),(self.x +15, self.y-1))
 
 
 def DrawBg():
@@ -330,7 +319,6 @@ def loadimageEn():
 
 
 
-
 def main():
     # create counter for end the game :)
     counter = 120
@@ -342,9 +330,19 @@ def main():
 
     DrawBg()
     drawTower()
-    images = load_images()  # Make sure to provide the relative or full path to the images directory.
-    player = AnimatedSprite(position=(100, 300), images=images)
-    all_sprites = pygame.sprite.Group(player)  # Creates a sprite group and adds 'player' to it.
+
+
+    #Draw Health Bar
+    DHB_left = Helathbar()
+    DHB_Right = Helathbar()
+    DHB_Main = Helathbar()
+    DHB_left_En = Helathbar()
+    DHB_Right_En = Helathbar()
+    DHB_Main_En = Helathbar()
+
+
+
+
     running = True
     drawUI()
     temper = pygame.image.load("Assets\\Map\\map.png")
@@ -393,11 +391,10 @@ def main():
 
 
         screen.blit(temper, (0, 0))
-        all_sprites.update(dt)  # Calls the 'update' method on all sprites in the list (currently just the player).
+
 
         exirbar_sprite.update(dt)
         exirbar_sprite.draw(screen)
-
 
 
 
@@ -416,6 +413,14 @@ def main():
         screen.blit(timeSC, (2, 2))
 
 
+        #Draw Health Bar
+        DHB_left.drawHB(n= 500, ELH= 1000,Sc= 17.5,x= 87,y= 440 )
+        DHB_Right.drawHB(n= 500, ELH= 1000,Sc= 17.5,x= 355,y= 441 )
+        DHB_Main.drawHB(n= 2000, ELH= 2000,Sc= 35 ,x= 223,y= 501 )
+
+        DHB_left_En.drawHB(n= 500, ELH= 1000,Sc= 17.5,x= 87,y= 70)
+        DHB_Right_En.drawHB(n= 500, ELH= 1000,Sc= 17.5,x= 356,y= 70 )
+        DHB_Main_En.drawHB(n= 500, ELH= 1000,Sc= 17.5,x= 223,y= 0 )
         pygame.display.update()
 
 
