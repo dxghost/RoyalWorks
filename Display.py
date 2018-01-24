@@ -5,7 +5,7 @@ import sys, random, math
 import pygame.locals as GAME_GLOBALS
 import pygame.event as GAME_EVENTS
 import pygame.time as GAME_TIME
-
+import time
 
 pygame.init()
 
@@ -59,6 +59,45 @@ def drawUI():
     screen.blit(mini_PEKKA, (332, 610))
     screen.blit(hog_rider , (406, 610))
 
+def loadimgprince():
+    images = []
+    a = pygame.image.load("Assets\\chr_prince_out\\1_Down.png")
+    a = pygame.transform.scale(a , (90, 90))
+    images.append(a)
+    a = pygame.image.load("Assets\\chr_prince_out\\2_Down.png")
+    a = pygame.transform.scale(a, (90, 90))
+    images.append(a)
+    a = pygame.image.load("Assets\\chr_prince_out\\3_Down.png")
+    a = pygame.transform.scale(a, (90, 90))
+    images.append(a)
+    a = pygame.image.load("Assets\\chr_prince_out\\4_Down.png")
+    a = pygame.transform.scale(a, (90, 90))
+    images.append(a)
+    a = pygame.image.load("Assets\\chr_prince_out\\5_Down.png")
+    a = pygame.transform.scale(a, (90, 90))
+    images.append(a)
+    a = pygame.image.load("Assets\\chr_prince_out\\6_Down.png")
+    a = pygame.transform.scale(a, (90, 90))
+    images.append(a)
+    a = pygame.image.load("Assets\\chr_prince_out\\7_Down.png")
+    a = pygame.transform.scale(a, (90, 90))
+    images.append(a)
+    a = pygame.image.load("Assets\\chr_prince_out\\8_Down.png")
+    a = pygame.transform.scale(a, (90, 90))
+    images.append(a)
+    a = pygame.image.load("Assets\\chr_prince_out\\9_Down.png")
+    a = pygame.transform.scale(a, (90, 90))
+    images.append(a)
+    a = pygame.image.load("Assets\\chr_prince_out\\10_Down.png")
+    a = pygame.transform.scale(a, (90, 90))
+    images.append(a)
+
+    return images
+
+
+
+
+
 
 def drawTower():
     self_tower = pygame.image.load("Assets\\Towers\\Self_town_main.png")
@@ -102,13 +141,11 @@ class AnimatedSprite(pygame.sprite.Sprite):
         self.rect = pygame.Rect(position, size)
         self.images = images
         self.images_right = images
-        self.images_left = [pygame.transform.flip(image, True, False) for image in images]  # Flipping every image.
         self.index = 0
         self.image = images[self.index]  # 'image' is the current image of the animation.
 
-        self.velocity = pygame.math.Vector2(0, 0)
 
-        self.animation_time = 0.11
+        self.animation_time = 0.07
         self.current_time = 0
 
         self.animation_frames = 6
@@ -123,10 +160,6 @@ class AnimatedSprite(pygame.sprite.Sprite):
         Args:
             dt: Time elapsed between each frame.
         """
-        if self.velocity.x > 0:  # Use the right images if sprite is moving right.
-            self.images = self.images_right
-        elif self.velocity.x < 0:
-            self.images = self.images_left
 
         self.current_time += dt
         if self.current_time >= self.animation_time:
@@ -134,16 +167,11 @@ class AnimatedSprite(pygame.sprite.Sprite):
             self.index = (self.index + 1) % len(self.images)
             self.image = self.images[self.index]
 
-        self.rect.move_ip(*self.velocity)
 
     def update_frame_dependent(self):
         """
         Updates the image of Sprite every 6 frame (approximately every 0.1 second if frame rate is 60).
         """
-        if self.velocity.x > 0:  # Use the right images if sprite is moving right.
-            self.images = self.images_right
-        elif self.velocity.x < 0:
-            self.images = self.images_left
 
         self.current_frame += 1
         if self.current_frame >= self.animation_frames:
@@ -151,7 +179,6 @@ class AnimatedSprite(pygame.sprite.Sprite):
             self.index = (self.index + 1) % len(self.images)
             self.image = self.images[self.index]
 
-        self.rect.move_ip(*self.velocity)
 
     def update(self, dt):
         self.update_time_dependent(dt)
@@ -318,6 +345,12 @@ def loadimageEn():
 
 
 
+#just starting from scratch! )
+
+
+
+
+
 def main():
     # create counter for end the game :)
     counter = 120
@@ -329,6 +362,14 @@ def main():
 
     DrawBg()
     drawTower()
+
+    #create prince
+    a = loadimgprince()
+
+    prince = AnimatedSprite((200, 100), a)
+
+    up_prince = pygame.sprite.Group(prince)
+
 
 
     #Draw Health Bar
@@ -396,6 +437,8 @@ def main():
         exirbar_sprite.draw(screen)
 
 
+        up_prince.update(dt)
+        up_prince.draw(screen)
 
 
         #get the favorite index
