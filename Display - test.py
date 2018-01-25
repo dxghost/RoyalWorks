@@ -58,41 +58,142 @@ def drawUI():
     screen.blit(giant_ui, (257, 610))
     screen.blit(mini_PEKKA, (332, 610))
     screen.blit(hog_rider , (406, 610))
+class Units(pygame.sprite.Sprite):
+    '''
+    def __init__(self):
+        self.movement_types=['Fly','Walk']
+        self.movement_type='X'
+        self.shoot_types=['Air','Ground','Both']
+        self.shoot_type='X'
+        self.target_types=['Building','Any']
+        self.target_type=  'X'
+        self.rarity_types = ['Common','Rare','Epic','Legendary']
+        self.rarity_type = 'X'
+        self.movement_speeds = ['Slow','Normal','Fast']
+        self.movement_speed = 'X'
+        self.elixir_costs = [1,2,3,4,5,6,7,8,9,10]
+        self.elixir_cost = 'X'
+        self.counts = [i for i in range(1,15)]
+        self.count = 'X'
+        self.hitpoints = [i for i in range(10,3000)]
+        self.hp='X'
+        self.damages=[i for i in range(10,1000)]
+        self.damage='X'
+        self.life_states=['Dead','Alive']
+        self.life_state='X'
+        self.deploy_states=['Deployed','inDeck','notinDeck']
+        self.deploy_state = 'notinDeck'
+        self.attack_types = ['Melee','Ranged']
+        self.attack_type = 'X'
+    '''
 
-def loadimgprince():
-    images = []
-    a = pygame.image.load("Assets\\chr_prince_out\\1_Down.png")
-    a = pygame.transform.scale(a , (90, 90))
-    images.append(a)
-    a = pygame.image.load("Assets\\chr_prince_out\\2_Down.png")
-    a = pygame.transform.scale(a, (90, 90))
-    images.append(a)
-    a = pygame.image.load("Assets\\chr_prince_out\\3_Down.png")
-    a = pygame.transform.scale(a, (90, 90))
-    images.append(a)
-    a = pygame.image.load("Assets\\chr_prince_out\\4_Down.png")
-    a = pygame.transform.scale(a, (90, 90))
-    images.append(a)
-    a = pygame.image.load("Assets\\chr_prince_out\\5_Down.png")
-    a = pygame.transform.scale(a, (90, 90))
-    images.append(a)
-    a = pygame.image.load("Assets\\chr_prince_out\\6_Down.png")
-    a = pygame.transform.scale(a, (90, 90))
-    images.append(a)
-    a = pygame.image.load("Assets\\chr_prince_out\\7_Down.png")
-    a = pygame.transform.scale(a, (90, 90))
-    images.append(a)
-    a = pygame.image.load("Assets\\chr_prince_out\\8_Down.png")
-    a = pygame.transform.scale(a, (90, 90))
-    images.append(a)
-    a = pygame.image.load("Assets\\chr_prince_out\\9_Down.png")
-    a = pygame.transform.scale(a, (90, 90))
-    images.append(a)
-    a = pygame.image.load("Assets\\chr_prince_out\\10_Down.png")
-    a = pygame.transform.scale(a, (90, 90))
-    images.append(a)
+    def place_in_deck(self):
+        self.deploy_state = 'inDeck'
 
-    return images
+    def deploy(self):
+        self.life_state = 'Aliv   e'
+        self.deploy_state = 'Deployed'
+
+    def get_damage(self, value):
+        self.hp = self.hitpoint
+        self.hp -= value
+        if self.hp == 0:
+            self.kill()
+
+    def re_assign_hp(self):
+        self.hp = self.hitpoint
+
+    def kill(self):
+        self.life_state = 'Dead'
+        self.deploy_state = 'notinDeck'
+        self.re_assign_hp()
+
+
+class Dragon(Units):
+    def attr(self):
+        self.movement_type = 'Fly'
+        self.shoot_type = 'Both'
+        self.target_type = 'Any'
+        self.rarity_type = 'Rare'
+        self.movement_speed = ['Normal']
+        self.elixir_cost = 4
+        self.hitpoint = 600
+        self.damage = 100
+        self.count = 1
+        self.attack_type = 'Ranged'
+
+
+class Goblin(Units):
+    def __init__(self):
+        # attributes
+        self.movement_type = 'Walk'
+        self.shoot_type = 'Ground'
+        self.target_type = 'Any'
+        self.rarity_type = 'Common'
+        self.movement_speed = ['Fast']
+        self.elixir_cost = 2
+        self.hitpoint = 60
+        self.damage = 50
+        self.count = 3
+        self.attack_type = 'Melee'
+
+
+class Prince(Units):
+    def __init__(self,x,y):
+        # attributes
+        self.movement_type = 'Walk'
+        self.shoot_type = 'Ground'
+        self.target_type = 'Any'
+        self.rarity_type = 'Common'
+        self.movement_speed = ['Fast']
+        self.elixir_cost = 2
+        self.hitpoint = 60
+        self.damage = 50
+        self.count = 3
+        self.attack_type = 'Melee'
+        # load image
+        self.x=x
+        self.y=y
+        self.images = []
+        self.img = pygame.image.load("Assets\\chr_prince_out\\1_Down.png")
+        self.img = pygame.transform.scale(self.img, (90, 90))
+        self.images.append(self.img)
+        self.img = pygame.image.load("Assets\\chr_prince_out\\2_Down.png")
+        self.img = pygame.transform.scale(self.img, (90, 90))
+        self.images.append(self.img)
+        self.img = pygame.image.load("Assets\\chr_prince_out\\3_Down.png")
+        self.img = pygame.transform.scale(self.img, (90, 90))
+        self.images.append(self.img)
+        self.img = pygame.image.load("Assets\\chr_prince_out\\4_Down.png")
+        self.img = pygame.transform.scale(self.img, (90, 90))
+        self.images.append(self.img)
+        self.img = pygame.image.load("Assets\\chr_prince_out\\5_Down.png")
+        self.img = pygame.transform.scale(self.img, (90, 90))
+        self.images.append(self.img)
+        self.img = pygame.image.load("Assets\\chr_prince_out\\6_Down.png")
+        self.img = pygame.transform.scale(self.img, (90, 90))
+        self.images.append(self.img)
+        self.img = pygame.image.load("Assets\\chr_prince_out\\7_Down.png")
+        self.img = pygame.transform.scale(self.img, (90, 90))
+        self.images.append(self.img)
+        self.img = pygame.image.load("Assets\\chr_prince_out\\8_Down.png")
+        self.img.get_rect()
+        self.img = pygame.transform.scale(self.img, (90, 90))
+        self.images.append(self.img)
+        self.img = pygame.image.load("Assets\\chr_prince_out\\9_Down.png")
+        self.img = pygame.transform.scale(self.img, (90, 90))
+        self.images.append(self.img)
+        self.img = pygame.image.load("Assets\\chr_prince_out\\10_Down.png")
+        self.img = pygame.transform.scale(self.img, (90, 90))
+        self.images.append(self.img)
+        self.prince = AnimatedSprite((self.x, self.y), self.images)
+        self.up_prince = pygame.sprite.Group(self.prince)
+        self.prince = AnimatedSprite((self.x, self.y), self.images)
+        self.up_prince = pygame.sprite.Group(self.prince)
+    def show(self):
+        self.prince = AnimatedSprite((self.x, self.y), self.images)
+        self.up_prince = pygame.sprite.Group(self.prince)
+
 
 
 
@@ -358,18 +459,12 @@ def main():
     pygame.time.set_timer(pygame.USEREVENT, 1000)
     font = pygame.font.SysFont('Consloas', 30)
 
-
-
     DrawBg()
     drawTower()
 
-    #create prince
-    a = loadimgprince()
-
-    prince = AnimatedSprite((200, 100), a)
-
-    up_prince = pygame.sprite.Group(prince)
-
+    '''
+    PRINCE'''
+    P=Prince(200,100)
 
 
     #Draw Health Bar
@@ -436,9 +531,15 @@ def main():
         exirbar_sprite.update(dt)
         exirbar_sprite.draw(screen)
 
+        '''
+        PRINCE
+        P.show ro comment konid yebaram nakonid
+        '''
 
-        up_prince.update(dt)
-        up_prince.draw(screen)
+        P.y+=1
+        P.show()
+        P.up_prince.update(dt)
+        P.up_prince.draw(screen)
 
 
         #get the favorite index
