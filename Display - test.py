@@ -190,9 +190,8 @@ class Prince(Units):
         self.up_prince = pygame.sprite.Group(self.prince)
         self.prince = AnimatedSprite((self.x, self.y), self.images)
         self.up_prince = pygame.sprite.Group(self.prince)
-    def show(self):
-        self.prince = AnimatedSprite((self.x, self.y), self.images)
-        self.up_prince = pygame.sprite.Group(self.prince)
+
+
 
 
 
@@ -533,13 +532,18 @@ def main():
 
         '''
         PRINCE
-        P.show ro comment konid yebaram nakonid
         '''
+<<<<<<< HEAD
 
         P.y+=1
         #P.show()
+=======
+        #movement
+        P.prince.rect.move_ip(1,1)
+>>>>>>> 177f6fe366c30c01f44d1bf26ebad603bf8b5467
         P.up_prince.update(dt)
         P.up_prince.draw(screen)
+
 
 
         #get the favorite index
