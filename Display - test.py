@@ -6,7 +6,7 @@ import pygame.locals as GAME_GLOBALS
 import pygame.event as GAME_EVENTS
 import pygame.time as GAME_TIME
 import time
-
+import math
 pygame.init()
 
 SIZE = WIDTH, HEIGHT = 500, 750
@@ -62,31 +62,19 @@ class Units(pygame.sprite.Sprite):
     '''
     def __init__(self):
         self.movement_types=['Fly','Walk']
-        self.movement_type='X'
         self.shoot_types=['Air','Ground','Both']
-        self.shoot_type='X'
         self.target_types=['Building','Any']
-        self.target_type=  'X'
         self.rarity_types = ['Common','Rare','Epic','Legendary']
-        self.rarity_type = 'X'
         self.movement_speeds = ['Slow','Normal','Fast']
-        self.movement_speed = 'X'
         self.elixir_costs = [1,2,3,4,5,6,7,8,9,10]
-        self.elixir_cost = 'X'
         self.counts = [i for i in range(1,15)]
-        self.count = 'X'
         self.hitpoints = [i for i in range(10,3000)]
-        self.hp='X'
         self.damages=[i for i in range(10,1000)]
-        self.damage='X'
         self.life_states=['Dead','Alive']
-        self.life_state='X'
         self.deploy_states=['Deployed','inDeck','notinDeck']
-        self.deploy_state = 'notinDeck'
+        self.deploy_state = ['notinDeck','inDeck']
         self.attack_types = ['Melee','Ranged']
-        self.attack_type = 'X'
     '''
-
     def place_in_deck(self):
         self.deploy_state = 'inDeck'
 
@@ -107,6 +95,21 @@ class Units(pygame.sprite.Sprite):
         self.life_state = 'Dead'
         self.deploy_state = 'notinDeck'
         self.re_assign_hp()
+
+    def move(self):
+        #consider movement!
+        self.xmovefactor=(85-self.x)//50
+        self.ymovefactor=(210-self.y)/50
+        self.ymovefactor / self.xmovefactor
+        if self.side == 'Down':
+            if 0<=self.Animation.rect.center[0] <= 250 :
+                #should consider wether princess tower is destroyed or not
+                self.Animation.rect.move_ip(self.xmovefactor,self.ymovefactor)
+
+
+
+
+
 
 
 class Dragon(Units):
@@ -139,12 +142,11 @@ class Goblin(Units):
 
 
 class Prince(Units):
-    def __init__(self,x,y):
+    def __init__(self,x,y,side):
         # attributes
         self.movement_type = 'Walk'
         self.shoot_type = 'Ground'
         self.target_type = 'Any'
-        self.rarity_type = 'Common'
         self.movement_speed = ['Fast']
         self.elixir_cost = 2
         self.hitpoint = 60
@@ -154,42 +156,14 @@ class Prince(Units):
         # load image
         self.x=x
         self.y=y
+        self.side=side
         self.images = []
-        self.img = pygame.image.load("Assets\\chr_prince_out\\1_Down.png")
-        self.img = pygame.transform.scale(self.img, (90, 90))
-        self.images.append(self.img)
-        self.img = pygame.image.load("Assets\\chr_prince_out\\2_Down.png")
-        self.img = pygame.transform.scale(self.img, (90, 90))
-        self.images.append(self.img)
-        self.img = pygame.image.load("Assets\\chr_prince_out\\3_Down.png")
-        self.img = pygame.transform.scale(self.img, (90, 90))
-        self.images.append(self.img)
-        self.img = pygame.image.load("Assets\\chr_prince_out\\4_Down.png")
-        self.img = pygame.transform.scale(self.img, (90, 90))
-        self.images.append(self.img)
-        self.img = pygame.image.load("Assets\\chr_prince_out\\5_Down.png")
-        self.img = pygame.transform.scale(self.img, (90, 90))
-        self.images.append(self.img)
-        self.img = pygame.image.load("Assets\\chr_prince_out\\6_Down.png")
-        self.img = pygame.transform.scale(self.img, (90, 90))
-        self.images.append(self.img)
-        self.img = pygame.image.load("Assets\\chr_prince_out\\7_Down.png")
-        self.img = pygame.transform.scale(self.img, (90, 90))
-        self.images.append(self.img)
-        self.img = pygame.image.load("Assets\\chr_prince_out\\8_Down.png")
-        self.img.get_rect()
-        self.img = pygame.transform.scale(self.img, (90, 90))
-        self.images.append(self.img)
-        self.img = pygame.image.load("Assets\\chr_prince_out\\9_Down.png")
-        self.img = pygame.transform.scale(self.img, (90, 90))
-        self.images.append(self.img)
-        self.img = pygame.image.load("Assets\\chr_prince_out\\10_Down.png")
-        self.img = pygame.transform.scale(self.img, (90, 90))
-        self.images.append(self.img)
-        self.prince = AnimatedSprite((self.x, self.y), self.images)
-        self.up_prince = pygame.sprite.Group(self.prince)
-        self.prince = AnimatedSprite((self.x, self.y), self.images)
-        self.up_prince = pygame.sprite.Group(self.prince)
+        for i in range(1,11):
+            self.img= pygame.image.load("Assets\\chr_prince_out\\%s_%s.png"%(i,side))
+            self.img=pygame.transform.scale(self.img,(90,90))
+            self.images.append(self.img)
+        self.Animation = AnimatedSprite((self.x, self.y), self.images)
+        self.up_prince = pygame.sprite.Group(self.Animation)
 
 
 
@@ -379,7 +353,7 @@ class Checkwin(pygame.sprite.Sprite):
 
 
 
-class Helathbar:
+class Healthbar:
     def __init__(self, ELH , Sc, x, y):
         self.x = x
         self.y = y
@@ -419,7 +393,6 @@ def loadimageself():
     a = pygame.image.load("Assets\\EXir\\Checkwin\\4.png")
     a = pygame.transform.scale(a, (60, 80))
     images.append(a)
-
     return images
 
 
@@ -444,13 +417,6 @@ def loadimageEn():
 
 
 
-
-#just starting from scratch! )
-
-
-
-
-
 def main():
     # create counter for end the game :)
     counter = 120
@@ -463,16 +429,16 @@ def main():
 
     '''
     PRINCE'''
-    P=Prince(200,100)
-
+    P=Prince(200,100,'Down')
+    G=Prince(200,300,'Down')
 
     #Draw Health Bar
-    DHB_left = Helathbar(ELH= 1000,Sc= 17.5,x= 87,y= 440)
-    DHB_Right = Helathbar(ELH= 1000,Sc= 17.5,x= 355,y= 441)
-    DHB_Main = Helathbar(ELH= 2000,Sc= 35 ,x= 223,y= 501)
-    DHB_left_En = Helathbar(ELH= 1000,Sc= 17.5,x= 87,y= 70)
-    DHB_Right_En = Helathbar(ELH= 1000,Sc= 17.5,x= 356,y= 70)
-    DHB_Main_En = Helathbar(ELH= 1000,Sc= 17.5,x= 223,y= 0)
+    DHB_left = Healthbar(ELH= 1000, Sc= 17.5, x= 87, y= 440)
+    DHB_Right = Healthbar(ELH= 1000, Sc= 17.5, x= 355, y= 441)
+    DHB_Main = Healthbar(ELH= 2000, Sc= 35, x= 223, y= 501)
+    DHB_left_En = Healthbar(ELH= 1000, Sc= 17.5, x= 87, y= 70)
+    DHB_Right_En = Healthbar(ELH= 1000, Sc= 17.5, x= 356, y= 70)
+    DHB_Main_En = Healthbar(ELH= 1000, Sc= 17.5, x= 223, y= 0)
 
 
 
@@ -533,17 +499,15 @@ def main():
         '''
         PRINCE
         '''
-<<<<<<< HEAD
-
-        P.y+=1
-        #P.show()
-=======
         #movement
-        P.prince.rect.move_ip(1,1)
->>>>>>> 177f6fe366c30c01f44d1bf26ebad603bf8b5467
+
         P.up_prince.update(dt)
         P.up_prince.draw(screen)
+        P.move()
+        #---
 
+        G.up_prince.update(dt)
+        G.up_prince.draw(screen)
 
 
         #get the favorite index
