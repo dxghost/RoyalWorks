@@ -537,7 +537,7 @@ def main():
         '''
 
         P.y+=1
-        P.show()
+        #P.show()
         P.up_prince.update(dt)
         P.up_prince.draw(screen)
 
