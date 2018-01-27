@@ -382,6 +382,22 @@ class MoveTroops():
         return self.getposition
 
 
+
+
+
+def loadtowerimage():
+    cannon = pygame.image.load("Assets\\Towers\\cannon.png")
+    cannon_scaled = pygame.transform.scale(cannon, (165, 151))
+    en_cannon = pygame.image.load("Assets\\Towers\\En_cannon.png")
+    en_cannon_scaled =  pygame.transform.scale(en_cannon, (165, 151))
+    cannon_dir = pygame.image.load("Assets\\Towers\\1_cannon.png")
+    en_cannon_dir = pygame.image.load("Assets\\Towers\\18_cannon.png")
+
+    screen.blit(cannon_scaled, (153, 440))
+    screen.blit(en_cannon_scaled, (153, 0))
+    screen.blit(cannon_dir, (250, 500))
+    screen.blit(en_cannon_dir, (250, 100))
+
 def main():
     global prince
     dAd_prince = MoveTroops(pri_ui, prince, 73, 93, 182, 610)
@@ -471,9 +487,10 @@ def main():
 
         # all_sprites.draw(screen)
         drawTower()  # The Error was ignored
+        loadtowerimage()
 
 
-        drawTower()
+        #drawTower()
         # --------------------------------------------------------------------
 
         #  Draw Health Bar
@@ -500,6 +517,7 @@ def main():
         dAd_prince.move()  # enable to move troops
 
             # --------------------------------------------------------------------
+
 
         pygame.display.update()
 
