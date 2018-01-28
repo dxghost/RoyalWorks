@@ -209,6 +209,8 @@ class Units(pygame.sprite.Sprite):
                                     self.Animation.rect.move_ip(self.dx, self.dy)
                                     self.HitAnimation.rect.move_ip(self.dx, self.dy)
                                     self.rightmovecounter=1
+        #consider splash elixir effect when they are destroyed
+
             #hit
             #waghti ba ye sarbaze dige dargir mishan
             else:
@@ -303,7 +305,7 @@ class Prince(Units):
         self.leftmovecounter = 0
         self.rightmovecounter = 0
         self.target_type = 'Any'
-        self.elixir_cost = 2
+        self.elixir_cost = 3
         # load image
         self.x = x
         self.y = y
@@ -344,6 +346,58 @@ class Prince(Units):
         self.Animation.hitpoint = 200
         self.Animation.hp=self.Animation.hitpoint
         self.Animation.damage = 5
+class Knight(Units):
+    def __init__(self,x,y,side):
+        global Units_Animations_list
+        #needed for all troops classes
+        #attributes
+        self.side = side
+        # for movement
+        self.leftmovecounter = 0
+        self.rightmovecounter = 0
+        self.target_type = 'Any'
+        self.elixir_cost = 2
+        # load image
+        self.x = x
+        self.y = y
+        self.Goimages = []
+        self.Hitimages = []
+
+        self.wetheranimate_counter = True
+        if self.side =='Down':
+            for i in range(1,15):
+                self.img= pygame.image.load("Assets\\chr_knight_out\\%s_%s.png"%(i,self.side))
+                self.img=pygame.transform.scale(self.img,(90,90))
+                self.Goimages.append(self.img)
+                self.img2= pygame.image.load("Assets\\chr_knight_out\\%s_Hit.png"%(i))
+                self.img2 = pygame.transform.scale(self.img2, (90, 90))
+                self.Hitimages.append(self.img2)
+        if self.side =='Up':
+            for i in range(1,13):
+                self.img= pygame.image.load("Assets\\chr_knight_out\\%s_%s.png"%(i,self.side))
+                self.img=pygame.transform.scale(self.img,(90,90))
+                self.Goimages.append(self.img)
+            for i in range(1,12):
+                self.img2 = pygame.image.load("Assets\\chr_knight_out\\%s_Hit_%s.png"%(i,self.side))
+                self.img2 = pygame.transform.scale(self.img2, (90, 90))
+                self.Hitimages.append(self.img2)
+        self.Animation = AnimatedSprite((self.x, self.y), self.Goimages)
+        self.HitAnimation = AnimatedSprite((self.Animation.rect.center[0] - 50, self.Animation.rect.center[1] - 70),
+                                           self.Hitimages)
+        self.HitGroup = pygame.sprite.Group(self.HitAnimation)
+
+        self.Group = pygame.sprite.Group(self.Animation)
+
+        if self.side =='Down':
+            Units_Animations_list[1].append(self.Animation)
+        if self.side =='Up' :
+            Units_Animations_list[0].append(self.Animation)
+        #--------------------------DAMAGE------------------------------#
+        self.Animation.range=30
+        self.Animation.stat='Alive'
+        self.Animation.hitpoint = 150
+        self.Animation.hp=self.Animation.hitpoint
+        self.Animation.damage = 2
 
 def drawTowerUp():
     Enm_tower = pygame.image.load("Assets\\Towers\\Enm_town_main.png")
@@ -577,9 +631,9 @@ def main():
     drawTowerDown()
     '''
     Troops'''
-    P=Prince(210,100,'Down')
+    P=Giant(210,100,'Down')
     G=Giant(235,120,'Down')
-    S=Giant(215,320,'Up')
+    S=Knight(215,320,'Up')
     F=Prince(230,350,'Up')
     #Draw Health Bar
     DHB_left = Healthbar(ELH= 1000, Sc= 17.5, x= 87, y= 440)
