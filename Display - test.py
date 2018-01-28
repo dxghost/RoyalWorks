@@ -294,7 +294,60 @@ class Giant(Units):
         self.Animation.hitpoint = 300
         self.Animation.hp = self.Animation.hitpoint
         self.Animation.damage = 2
+class Hogrider(Units):
+    def __init__(self, x, y, side):
+        global Units_Animations_list
+        # needed for all troops classes
+        # attributes
+        self.side = side
+        # for movement
+        self.leftmovecounter = 0
+        self.rightmovecounter = 0
+        #
+        self.elixir_cost = 4
+        self.target_type = 'Building'
 
+
+        # load image
+        self.x = x
+        self.y = y
+        self.Goimages = []
+        self.Hitimages = []
+        self.wetheranimate_counter = True
+        if self.side =='Down':
+            for i in range(1,9):
+                self.img= pygame.image.load("Assets\\chr_hogrider_out\\%s_%s.png"%(i,self.side))
+                self.img=pygame.transform.scale(self.img,(90,90))
+                self.Goimages.append(self.img)
+            for i in range(1,11):
+                self.img2= pygame.image.load("Assets\\chr_hogrider_out\\%s_Hit_%s.png"%(i,self.side))
+                self.img2 = pygame.transform.scale(self.img2, (90, 90))
+                self.Hitimages.append(self.img2)
+        if self.side =='Up':
+            for i in range(1,9):
+                self.img= pygame.image.load("Assets\\chr_hogrider_out\\%s_%s.png"%(i,self.side))
+                self.img=pygame.transform.scale(self.img,(90,90))
+                self.Goimages.append(self.img)
+            for i in range(1,11):
+                self.img2 = pygame.image.load("Assets\\chr_hogrider_out\\%s_Hit_%s.png"%(i,self.side))
+                self.img2 = pygame.transform.scale(self.img2, (90, 90))
+                self.Hitimages.append(self.img2)
+        self.Animation = AnimatedSprite((self.x, self.y), self.Goimages)
+        self.HitAnimation = AnimatedSprite((self.Animation.rect.center[0] - 50, self.Animation.rect.center[1] - 80),
+                                           self.Hitimages)
+        self.HitGroup = pygame.sprite.Group(self.HitAnimation)
+
+        self.Group = pygame.sprite.Group(self.Animation)
+        if self.side =='Down':
+            Units_Animations_list[1].append(self.Animation)
+        if self.side =='Up' :
+            Units_Animations_list[0].append(self.Animation)
+        #____________________DMG_________________#
+        self.Animation.range=30
+        self.Animation.stat = 'Alive'
+        self.Animation.hitpoint = 400
+        self.Animation.hp = self.Animation.hitpoint
+        self.Animation.damage = 3
 class Prince(Units):
     def __init__(self,x,y,side):
         global Units_Animations_list
@@ -343,9 +396,9 @@ class Prince(Units):
         #--------------------------DAMAGE------------------------------#
         self.Animation.range=30
         self.Animation.stat='Alive'
-        self.Animation.hitpoint = 200
+        self.Animation.hitpoint = 400
         self.Animation.hp=self.Animation.hitpoint
-        self.Animation.damage = 5
+        self.Animation.damage = 3
 class Knight(Units):
     def __init__(self,x,y,side):
         global Units_Animations_list
@@ -395,10 +448,116 @@ class Knight(Units):
         #--------------------------DAMAGE------------------------------#
         self.Animation.range=30
         self.Animation.stat='Alive'
-        self.Animation.hitpoint = 150
+        self.Animation.hitpoint = 300
         self.Animation.hp=self.Animation.hitpoint
         self.Animation.damage = 2
+class Minipekka(Units):
+    def __init__(self,x,y,side):
+        global Units_Animations_list
+        #needed for all troops classes
+        #attributes
+        self.side = side
+        # for movement
+        self.leftmovecounter = 0
+        self.rightmovecounter = 0
+        self.target_type = 'Any'
+        self.elixir_cost = 2
+        # load image
+        self.x = x
+        self.y = y
+        self.Goimages = []
+        self.Hitimages = []
 
+        self.wetheranimate_counter = True
+        if self.side =='Down':
+            for i in range(1,13):
+                self.img= pygame.image.load("Assets\\chr_mini_PEKKA_out\\%s_%s.png"%(i,'Dwon'))
+                self.img=pygame.transform.scale(self.img,(75,75))
+                self.Goimages.append(self.img)
+            for i in range(1,11):
+                self.img2= pygame.image.load("Assets\\chr_mini_PEKKA_out\\%s_Hit_%s.png"%(i,'Down'))
+                self.img2 = pygame.transform.scale(self.img2, (75, 75))
+                self.Hitimages.append(self.img2)
+        if self.side =='Up':
+            for i in range(1,13):
+                self.img= pygame.image.load("Assets\\chr_mini_PEKKA_out\\%s_%s.png"%(i,self.side))
+                self.img=pygame.transform.scale(self.img,(75,75))
+                self.Goimages.append(self.img)
+            for i in range(1,12):
+                self.img2 = pygame.image.load("Assets\\chr_mini_PEKKA_out\\%s_Hit_%s.png"%(i,self.side))
+                self.img2 = pygame.transform.scale(self.img2, (75, 75))
+                self.Hitimages.append(self.img2)
+        self.Animation = AnimatedSprite((self.x, self.y), self.Goimages)
+        self.HitAnimation = AnimatedSprite((self.Animation.rect.center[0] - 50, self.Animation.rect.center[1] - 70),
+                                           self.Hitimages)
+        self.HitGroup = pygame.sprite.Group(self.HitAnimation)
+
+        self.Group = pygame.sprite.Group(self.Animation)
+
+        if self.side =='Down':
+            Units_Animations_list[1].append(self.Animation)
+        if self.side =='Up' :
+            Units_Animations_list[0].append(self.Animation)
+        #--------------------------DAMAGE------------------------------#
+        self.Animation.range=30
+        self.Animation.stat='Alive'
+        self.Animation.hitpoint = 250
+        self.Animation.hp=self.Animation.hitpoint
+        self.Animation.damage = 3
+#consider deploying three goblins at the same time
+class Goblin(Units):
+    def __init__(self,x,y,side):
+        global Units_Animations_list
+        #needed for all troops classes
+        #attributes
+        self.side = side
+        # for movement
+        self.leftmovecounter = 0
+        self.rightmovecounter = 0
+        self.target_type = 'Any'
+        self.elixir_cost = 1
+        # load image
+        self.x = x
+        self.y = y
+        self.Goimages = []
+        self.Hitimages = []
+
+        self.wetheranimate_counter = True
+        if self.side =='Down':
+            for i in range(1,9):
+                self.img= pygame.image.load("Assets\\chr_goblins_out\\%s_%s.png"%(i,'Down'))
+                self.img=pygame.transform.scale(self.img,(60,60))
+                self.Goimages.append(self.img)
+            for i in range(1,10):
+                self.img2= pygame.image.load("Assets\\chr_goblins_out\\%s_Hit_%s.png"%(i,'Down'))
+                self.img2 = pygame.transform.scale(self.img2, (60, 60))
+                self.Hitimages.append(self.img2)
+        if self.side =='Up':
+            for i in range(1,9):
+                self.img= pygame.image.load("Assets\\chr_goblins_out\\%s_%s.png"%(i,self.side))
+                self.img=pygame.transform.scale(self.img,(60,60))
+                self.Goimages.append(self.img)
+            for i in range(1,9):
+                self.img2 = pygame.image.load("Assets\\chr_goblins_out\\%s_Hit_%s.png"%(i,self.side))
+                self.img2 = pygame.transform.scale(self.img2, (60, 60))
+                self.Hitimages.append(self.img2)
+        self.Animation = AnimatedSprite((self.x, self.y), self.Goimages)
+        self.HitAnimation = AnimatedSprite((self.Animation.rect.center[0] - 50, self.Animation.rect.center[1] - 70),
+                                           self.Hitimages)
+        self.HitGroup = pygame.sprite.Group(self.HitAnimation)
+
+        self.Group = pygame.sprite.Group(self.Animation)
+
+        if self.side =='Down':
+            Units_Animations_list[1].append(self.Animation)
+        if self.side =='Up' :
+            Units_Animations_list[0].append(self.Animation)
+        #--------------------------DAMAGE------------------------------#
+        self.Animation.range=30
+        self.Animation.stat='Alive'
+        self.Animation.hitpoint = 100
+        self.Animation.hp=self.Animation.hitpoint
+        self.Animation.damage = 1
 def drawTowerUp():
     Enm_tower = pygame.image.load("Assets\\Towers\\Enm_town_main.png")
     Enm_tower = pygame.transform.scale(Enm_tower, (100, 115))
@@ -472,7 +631,6 @@ class AnimatedSprite(pygame.sprite.Sprite):
             self.current_frame = 0
             self.index = (self.index + 1) % len(self.images)
             self.image = self.images[self.index]
-
 
     def update(self, dt):
         self.update_time_dependent(dt)
@@ -631,10 +789,10 @@ def main():
     drawTowerDown()
     '''
     Troops'''
-    P=Giant(210,100,'Down')
-    G=Giant(235,120,'Down')
-    S=Knight(215,320,'Up')
-    F=Prince(230,350,'Up')
+    P=Minipekka(210,100,'Down')
+    G=Goblin(235,120,'Down')
+    S=Goblin(215,320,'Up')
+    F=Minipekka(230,350,'Up')
     #Draw Health Bar
     DHB_left = Healthbar(ELH= 1000, Sc= 17.5, x= 87, y= 440)
     DHB_Right = Healthbar(ELH= 1000, Sc= 17.5, x= 355, y= 441)
