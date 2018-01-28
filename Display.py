@@ -5,6 +5,10 @@ import pygame.locals as GAME_GLOBALS
 import pygame.event as GAME_EVENTS
 import pygame.time as GAME_TIME
 import time
+import chr_giant_out as Giant
+import chr_mini_PEKKA_out as PEKKA
+import chr_knight_out as KNIGHT
+import cannon
 
 pygame.init()
 
@@ -186,9 +190,6 @@ class Exirbar(pygame.sprite.Sprite):
         self.animation_frames = 6
         self.current_frame = 0
 
-    def getindex(self):
-        return self.index
-
     def update_time_dependent(self, dt):
         """
         Updates the image of Sprite approximately every 0.1 second.
@@ -217,6 +218,9 @@ class Exirbar(pygame.sprite.Sprite):
 
     def update(self, dt):
         self.update_time_dependent(dt)
+
+    def getindex(self):
+        return self.index
 
     def setindex(self, indexs):
         self.index = indexs
@@ -303,18 +307,96 @@ def loadimageEn():
     return images
 
 
+class MoveTroops():
+    def __init__(self, image, width, height, x, y):
+        self.image = image
+        self.x = x
+        self.y = y
+        self.x1 = x
+        self.y1 = y
+        self.W = width
+        self.H = height
+        self.drag = False
+        # self.image_m = image_m
+        self.createimg = False
+        self.getposition = (0, 0)
+        self.counter = 0
+        self.aliveimage = True
+        self.control = False
+        self.checkmouse = 0
+        self.checker = False
+        self.subexir = False
+
+    def move(self):
+        self.counter = 0
+
+        if self.aliveimage:
+            screen.blit(self.image, (self.x1, self.y1))
+
+        if not self.control:
+            self.counter = 0
+            return None
+        self.mouse = pygame.mouse.get_pos()
+        self.click = pygame.mouse.get_pressed()
+
+        if not self.createimg:
+            if self.click[0] == 1 and self.x1 + self.W > self.mouse[0] > self.x1 and self.y1 + self.H > self.mouse[1] > self.y1:  # asking if i am within the boundaries of the image
+                self.drag = True
+                self.counter = 1
+                self.checker = True
+
+        if self.checker == True:
+            if self.click[0] == 0:
+                self.drag = False
+                self.counter = 2
+
+        if self.counter != 0:
+            self.createimg = True
+            self.aliveimage = False
+
+        if self.drag == True:
+            self.x = self.mouse[0] - (self.W / 2)
+            self.y = self.mouse[1] - (self.H / 2)
+
+            # screen.blit(self.image_m, (self.x, self.y))
+
+        self.getposition = (self.x, self.y)
+
+    def getpostion(self):
+        return self.getposition
+
+
+def loadtowerimage():
+    cannon = pygame.image.load("Assets\\Towers\\cannon.png")
+    cannon_scaled = pygame.transform.scale(cannon, (165, 151))
+    cannon_scaled_left = pygame.transform.scale(cannon, (125, 111))
+    cannon_scaled_right = pygame.transform.scale(cannon, (125, 111))
+
+
+    en_cannon = pygame.image.load("Assets\\Towers\\En_cannon.png")
+    en_cannon_scaled = pygame.transform.scale(en_cannon, (165, 151))
+    cannon_dir = pygame.image.load("Assets\\Towers\\1_cannon.png")
+    en_cannon_dir = pygame.image.load("Assets\\Towers\\18_cannon.png")
+
+    screen.blit(cannon_scaled, (153, 440))
+    screen.blit(cannon_scaled_left, (39, 390))
+    screen.blit(cannon_scaled_right, (307, 390))
+    screen.blit(en_cannon_scaled, (153, 0))
+    # screen.blit(cannon_dir, (250, 500))
+    # screen.blit(en_cannon_dir, (250, 100))
+
+
+# --------------------------------------------------------------------
+
+
 pri_ui = pygame.image.load("Assets\\EXir\\prince.png")
 pri_ui = pygame.transform.scale(pri_ui, (73, 93))
-
-prince = pygame.image.load("Assets\\chr_prince_out\\1_Down.png")
-prince = pygame.transform.scale(prince, (90, 90))
-
 giant_ui = pygame.image.load("Assets\\EXir\\giant.png")
 giant_ui = pygame.transform.scale(giant_ui, (73, 93))
 goblins_ui = pygame.image.load("Assets\\EXir\\goblins.png")
 goblins_ui = pygame.transform.scale(goblins_ui, (73, 93))
-skeletons_ui = pygame.image.load("Assets\\EXir\\skeletons.png")
-skeletons_ui = pygame.transform.scale(skeletons_ui, (73, 93))
+barbar_ui = pygame.image.load("Assets\\EXir\\barbarians.png")
+barbar_ui = pygame.transform.scale(barbar_ui, (73, 93))
 knight_ui = pygame.image.load("Assets\\EXir\\knight.png")
 knight_ui = pygame.transform.scale(knight_ui, (73, 93))
 mini_PEKKA = pygame.image.load("Assets\\EXir\\mini_PEKKA.png")
@@ -327,93 +409,72 @@ screen.blit(mini_PEKKA, (332, 610))
 screen.blit(hog_rider, (406, 610))
 
 
-class MoveTroops():
-    def __init__(self, image, image_m, width, height, x, y):
-        self.image = image
-        self.x = x
-        self.y = y
-        self.x1 = x
-        self.y1 = y
-        self.W = width
-        self.H = height
-        self.drag = False
-        self.image_m = image_m
-        self.createimg = False
-        self.getposition = (0, 0)
-        self.counter = 0
-        self.aliveimage = True
-        self.control = False
-
-
-        self.checkmouse = 0
-    def move(self):
-        if self.aliveimage:
-            screen.blit(self.image, (self.x1, self.y1))
-
-        if self.control:
-            self.mouse = pygame.mouse.get_pos()
-            self.click = pygame.mouse.get_pressed()
-
-            if not self.createimg:
-                if self.click[0] == 1 and self.x1 + self.W > self.mouse[0] > self.x1 and self.y1 + self.H > self.mouse[1] > self.y1:  # asking if i am within the boundaries of the image
-                    self.drag = True
-                    self.counter = 1
-
-            if self.click[0] == 0:
-                self.drag = False
-                self.counter = 0
-
-            if self.counter != 0:
-                self.createimg = True
-                self.aliveimage = False
-
-
-            if self.drag == True:
-
-                self.x = self.mouse[0] - (self.W / 2)
-                self.y = self.mouse[1] - (self.H / 2)
-
-                # screen.blit(self.image_m, (self.x, self.y))
-
-            self.getposition = (self.x, self.y)
-
-
-    def getpostion(self):
-        return self.getposition
-
-
-
-
-
-def loadtowerimage():
-    cannon = pygame.image.load("Assets\\Towers\\cannon.png")
-    cannon_scaled = pygame.transform.scale(cannon, (165, 151))
-    en_cannon = pygame.image.load("Assets\\Towers\\En_cannon.png")
-    en_cannon_scaled =  pygame.transform.scale(en_cannon, (165, 151))
-    cannon_dir = pygame.image.load("Assets\\Towers\\1_cannon.png")
-    en_cannon_dir = pygame.image.load("Assets\\Towers\\18_cannon.png")
-
-    screen.blit(cannon_scaled, (153, 440))
-    screen.blit(en_cannon_scaled, (153, 0))
-    screen.blit(cannon_dir, (250, 500))
-    screen.blit(en_cannon_dir, (250, 100))
+# ------------------------------------------------------------------------
 
 def main():
+    # --------------------------------------------------------------------
     global prince
-    dAd_prince = MoveTroops(pri_ui, prince, 73, 93, 182, 610)
+    global giant_ui
+    global goblins_ui
+    global knight_ui
+    global mini_PEKKA
+    global hog_rider
+
+    randlist = [(182, 610), (257, 610), (332, 610), (406, 610)]
+    choose = random.randint(0, len(randlist) - 1)
+
+    dAd_prince = MoveTroops(pri_ui, 73, 93, randlist[choose][0], randlist[choose][1])
+    randlist.remove(randlist[choose])
+
+    choose_1 = random.randint(0, len(randlist) - 1)
+
+    dAd_giant = MoveTroops(giant_ui, 73, 93, randlist[choose_1][0], randlist[choose_1][1])
+    randlist.remove(randlist[choose_1])
+
+    choose_2 = random.randint(0, len(randlist) - 1)
+    dad_PEKKA = MoveTroops(mini_PEKKA, 73, 93, randlist[choose_2][0], randlist[choose_2][1])
+    randlist.remove(randlist[choose_2])
+
+    choose_3 = random.randint(0, len(randlist) - 1)
+    dad_knight = MoveTroops(knight_ui, 73, 93, randlist[choose_3][0], randlist[choose_3][1])
+    randlist.remove(randlist[choose_3])
+
+    # --------------------------------------------------------------------
 
     UITab = pygame.image.load("Assets\\EXir\\UITab.png")
 
     # create counter for end the game :)
-    counter = 120
-    text = '120'.rjust(2)
+    counter = 180
+    text = '180'.rjust(2)
     pygame.time.set_timer(pygame.USEREVENT, 1000)
     font = pygame.font.SysFont('Consloas', 30)
 
-    # create prince
+    # --------------------------------------------------------------------
+
+    # create object
     a = loadimgprince()
     prince = AnimatedSprite(dAd_prince.getposition, a)
     up_prince = pygame.sprite.Group(prince)
+
+    giant = Giant.AnimatedSprite(dAd_giant.getposition, Giant.load_images())
+    up_giant = pygame.sprite.Group(giant)
+
+    pekka = PEKKA.AnimatedSprite(dad_PEKKA.getposition, PEKKA.load_images())
+    up_pekka = pygame.sprite.Group(pekka)
+
+    knight = KNIGHT.AnimatedSprite(dad_knight.getposition, KNIGHT.load_images())
+    up_knight = pygame.sprite.Group(knight)
+
+    cannon_sp_main_self = cannon.AnimatedSprite((173, 385), cannon.load_images(130), 130)
+    up_cannon_sp_main_self = pygame.sprite.Group(cannon_sp_main_self)
+
+    cannon_sp_left_self = cannon.AnimatedSprite((55, 349), cannon.load_images(100), 100)
+    up_cannon_sp_left_self = pygame.sprite.Group(cannon_sp_left_self)
+
+    cannon_sp_right_self = cannon.AnimatedSprite((320, 349), cannon.load_images(100), 100)
+    up_cannon_sp_right_self = pygame.sprite.Group(cannon_sp_right_self)
+
+    # --------------------------------------------------------------------
 
     # Draw Health Bar
     DHB_left = Helathbar(ELH=1000, Sc=17.5, x=87, y=440)
@@ -436,10 +497,7 @@ def main():
     ChkresEn = Checkwin((430, 220), load_image_En)
     ChkresEn_sprite = pygame.sprite.Group(ChkresEn)
 
-    # create a glow gif when a exir bar is complete
-
-
-    # draw exir bar
+    # draw excir bar
     exirbar = Exirbar(position=(170, 690))
     exirbar_sprite = pygame.sprite.Group(exirbar)
     C_pr = True
@@ -452,25 +510,20 @@ def main():
         screen.blit(temper, (0, 0))
         screen.blit(UITab, (155, 600))
 
-
-
-
         dt = clock.tick(FPS) / 1000  # Amount of seconds between each loop.
         # pygame.draw.rect(screen, (255, 255, 255), (0, 0, 480, 480))
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
-        #  ----------------------------------------------------
+                #  ----------------------------------------------------
             if event.type == pygame.USEREVENT and counter != 0:
                 counter -= 1
                 text = str(counter).rjust(3)
 
         screen.blit(font.render(text, True, (0, 0, 0)), (12, 6))
         screen.blit(timeSC, (2, 2))
-        #  ----------------------------------------------------
 
-
-
+        #  -----------------------------------------------------------------
 
         # DrawBg()    #blue background
 
@@ -489,8 +542,7 @@ def main():
         drawTower()  # The Error was ignored
         loadtowerimage()
 
-
-        #drawTower()
+        # drawTower()
         # --------------------------------------------------------------------
 
         #  Draw Health Bar
@@ -503,21 +555,103 @@ def main():
         DHB_Main_En.setHB(100)
 
         # --------------------------------------------------------------------
-
+        #  prince
         if exirbar.getindex() >= 3:
             dAd_prince.control = True
+        else:
+            dAd_prince.control = False
 
         if dAd_prince.createimg:  # چک میکنه میبینه اگر موس فشرده شده بود اسپرایت پرینس رو ایجاد میکنه
             up_prince.update(dt, dAd_prince.getposition)
             up_prince.draw(screen)
 
-        if  dAd_prince.counter != 0:
-            exirbar.setindex(exirbar.getindex() - 4)
+        if exirbar.getindex() >= 3:
+            if dAd_prince.counter == 2:
+                exirbar.setindex(exirbar.getindex() - 3)
+                dAd_prince.checker = False
 
         dAd_prince.move()  # enable to move troops
 
-            # --------------------------------------------------------------------
+        # --------------------------------------------------------------------
+        #  giant
+        if exirbar.getindex() >= 5:
+            dAd_giant.control = True
+        else:
+            dAd_giant.control = False
 
+        if dAd_giant.createimg:
+            up_giant.update(dt, dAd_giant.getposition)
+            up_giant.draw(screen)
+
+        if exirbar.getindex() >= 5:
+            if dAd_giant.counter == 2:
+                exirbar.setindex(exirbar.getindex() - 5)
+                dAd_giant.checker = False
+
+        dAd_giant.move()
+
+        # --------------------------------------------------------------------
+        #  pekka
+        if exirbar.getindex() >= 3:
+            dad_PEKKA.control = True
+        else:
+            dad_PEKKA.control = False
+
+        if dad_PEKKA.createimg:
+            up_pekka.update(dt, dad_PEKKA.getposition)
+            up_pekka.draw(screen)
+
+        if exirbar.getindex() >= 3:
+            if dad_PEKKA.counter == 2:
+                exirbar.setindex(exirbar.getindex() - 3)
+                dad_PEKKA.checker = False
+
+        dad_PEKKA.move()
+
+        # --------------------------------------------------------------------
+
+        if exirbar.getindex() >= 3:
+            dad_knight.control = True
+        else:
+            dad_knight.control = False
+
+        if dad_knight.createimg:
+            up_knight.update(dt, dad_knight.getposition)
+            up_knight.draw(screen)
+
+        if exirbar.getindex() >= 3:
+            if dad_knight.counter == 2:
+                exirbar.setindex(exirbar.getindex() - 3)
+                dad_knight.checker = False
+
+        dad_knight.move()
+
+        # --------------------------------------------------------------------
+
+
+        up_cannon_sp_main_self.update(dt)
+        up_cannon_sp_main_self.draw(screen)
+
+
+        up_cannon_sp_left_self.update(dt)
+        up_cannon_sp_left_self.draw(screen)
+
+
+        up_cannon_sp_right_self.update(dt)
+        up_cannon_sp_right_self.draw(screen)
+
+        cannon_sp_right_self.x = 50
+        cannon_sp_right_self.y = 300
+
+        cannon_sp_main_self.x = 50
+        cannon_sp_main_self.y = 300
+
+        cannon_sp_left_self.x = 50
+        cannon_sp_left_self.y = 300
+
+        pygame.draw.rect(screen, (255, 255, 255), (50, 300, 40, 50))
+        print(cannon_sp_main_self.degree)
+        print(cannon_sp_left_self.degree)
 
         pygame.display.update()
 
