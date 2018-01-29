@@ -68,6 +68,9 @@ Units_list = [[], []]
 =======
     screen.blit(hog_rider , (406, 610))
 Units_Animations_list=[[], []]
+<<<<<<< HEAD
+>>>>>>> 8bb8e1e6bbd96ee22e7747391b86155d1f29b2d9
+=======
 >>>>>>> 8bb8e1e6bbd96ee22e7747391b86155d1f29b2d9
 
 class Units(pygame.sprite.Sprite):
@@ -88,6 +91,7 @@ class Units(pygame.sprite.Sprite):
         self.attack_types = ['Melee','Ranged']
     '''
 
+<<<<<<< HEAD
 <<<<<<< HEAD
     def place_in_deck(self):
         self.deploy_state = 'inDeck'
@@ -126,6 +130,9 @@ class Units(pygame.sprite.Sprite):
                         self.wethertomove_counter = False
 =======
     def wethertomove(self):
+=======
+    def wethertomove(self):
+>>>>>>> 8bb8e1e6bbd96ee22e7747391b86155d1f29b2d9
         global Units_Animations_list
         self.wethertomove_counter=True
         if self.target_type == 'Any':
@@ -148,6 +155,9 @@ class Units(pygame.sprite.Sprite):
                             i.stat='Dead'
                             Units_Animations_list[1].remove(i)
                             i.hp=i.hitpoint
+<<<<<<< HEAD
+>>>>>>> 8bb8e1e6bbd96ee22e7747391b86155d1f29b2d9
+=======
 >>>>>>> 8bb8e1e6bbd96ee22e7747391b86155d1f29b2d9
         return self.wethertomove_counter
 
@@ -155,6 +165,7 @@ class Units(pygame.sprite.Sprite):
         # Hit
         dt = 0.03
         self.HitGroup.update(dt)
+<<<<<<< HEAD
 <<<<<<< HEAD
         # waghti ke rah miran
         if self.wethertomove() == True:
@@ -422,6 +433,130 @@ class Dragon(Units):
                         self.wetheranimate_counter=False
                         self.HitGroup.draw(screen)
             else:
+=======
+        #waghti ke rah miran
+        if self.Animation.stat=='Alive':
+            if self.wethertomove() == True:
+                dt=0.03
+                self.Group.update(dt)
+                if self.wetheranimate_counter==True:
+                    self.Group.draw(screen)
+                if self.side == 'Down':
+                    if 0<=self.x <= 225 :
+                        if self.Animation.rect.center!= (130,282) and self.leftmovecounter!=1:
+                            self.xmovefactor = 130 - self.Animation.rect.center[0]
+                            self.ymovefactor = 282 - self.Animation.rect.center[1]
+                            if self.ymovefactor!=0:
+                                self.Angle=math.atan2(self.ymovefactor,self.xmovefactor)
+                                self.dx=math.cos(self.Angle)*2
+                                self.dy=math.sin(self.Angle)*2
+                                #should consider wether princess tower is destroyed or not
+                                self.Animation.rect.move_ip(self.dx,self.dy)
+                                self.HitAnimation.rect.move_ip(self.dx,self.dy)
+                        else:
+                            if self.Animation.rect.center != (130, 402) :
+                                self.xmovefactor = 130 - self.Animation.rect.center[0]
+                                self.ymovefactor = 402 - self.Animation.rect.center[1]
+                                if self.ymovefactor != 0:
+                                    self.Angle = math.atan2(self.ymovefactor, self.xmovefactor)
+                                    self.dx = math.cos(self.Angle) * 1.5
+                                    self.dy = math.sin(self.Angle) * 1.5
+                                    # should consider wether princess tower is destroyed or not
+                                    self.Animation.rect.move_ip(self.dx, self.dy)
+                                    self.HitAnimation.rect.move_ip(self.dx, self.dy)
+                                    self.leftmovecounter=1
+                                #self.Group.
+                    elif 225<self.x<=500:
+                        if self.Animation.rect.center!= (408,282) and self.rightmovecounter!=1:
+                            self.xmovefactor =abs( 408 - self.Animation.rect.center[0])
+                            self.ymovefactor =abs( 282 - self.Animation.rect.center[1])
+                            if self.ymovefactor!=0:
+                                self.Angle=math.atan2(self.ymovefactor,self.xmovefactor)
+                                self.dx=math.cos(self.Angle)*2
+                                self.dy=math.sin(self.Angle)*2
+                                #should consider wether princess tower is destroyed or not
+                                self.Animation.rect.move_ip(self.dx,self.dy)
+                                self.HitAnimation.rect.move_ip(self.dx,self.dy)
+                        else:
+                            if self.Animation.rect.center != (408, 402) :
+                                self.xmovefactor = 408 - self.Animation.rect.center[0]
+                                self.ymovefactor = 402 - self.Animation.rect.center[1]
+                                if self.ymovefactor != 0:
+                                    self.Angle = math.atan2(self.ymovefactor, self.xmovefactor)
+                                    self.dx = math.cos(self.Angle) * 1.5
+                                    self.dy = math.sin(self.Angle) * 1.5
+                                    # should consider wether princess tower is destroyed or not
+                                    self.Animation.rect.move_ip(self.dx, self.dy)
+                                    self.HitAnimation.rect.move_ip(self.dx, self.dy)
+                                    self.rightmovecounter=1
+                elif self.side =='Up':
+                    if 0<=self.x <= 225 :
+                        if self.Animation.rect.center!= (130,340) and self.leftmovecounter!=1:
+                            self.xmovefactor = 130 - self.Animation.rect.center[0]
+                            self.ymovefactor = 340 - self.Animation.rect.center[1]
+                            if self.ymovefactor!=0:
+                                self.Angle=math.atan2(self.ymovefactor,self.xmovefactor)
+                                self.dx=math.cos(self.Angle)*2
+                                self.dy=math.sin(self.Angle)*2
+                                #should consider wether princess tower is destroyed or not
+                                self.Animation.rect.move_ip(self.dx,self.dy)
+                                self.HitAnimation.rect.move_ip(self.dx,self.dy)
+                        else:
+                            if self.Animation.rect.center != (130, 210) :
+                                self.xmovefactor = 130 - self.Animation.rect.center[0]
+                                self.ymovefactor = 210 - self.Animation.rect.center[1]
+                                if self.ymovefactor != 0:
+                                    self.Angle = math.atan2(self.ymovefactor, self.xmovefactor)
+                                    self.dx = math.cos(self.Angle) * 1.5
+                                    self.dy = math.sin(self.Angle) * 1.5
+                                    # should consider wether princess tower is destroyed or not
+                                    self.Animation.rect.move_ip(self.dx, self.dy)
+                                    self.HitAnimation.rect.move_ip(self.dx, self.dy)
+                                    self.leftmovecounter=1
+                    elif 225<self.x<=500:
+                        if self.Animation.rect.center!= (408,340) and self.rightmovecounter!=1:
+                            self.xmovefactor =abs( 408 - self.Animation.rect.center[0])
+                            self.ymovefactor =-abs( 340 - self.Animation.rect.center[1])
+                            if self.ymovefactor!=0:
+                                self.Angle=math.atan2(self.ymovefactor,self.xmovefactor)
+                                self.dx=math.cos(self.Angle)*2
+                                self.dy=math.sin(self.Angle)*2
+                                #should consider wether princess tower is destroyed or not
+                                self.Animation.rect.move_ip(self.dx,self.dy)
+                                self.HitAnimation.rect.move_ip(self.dx,self.dy)
+                        else:
+                            if self.Animation.rect.center != (408, 210) :
+                                self.xmovefactor = 408 - self.Animation.rect.center[0]
+                                self.ymovefactor = 210 - self.Animation.rect.center[1]
+                                if self.ymovefactor != 0:
+                                    self.Angle = math.atan2(self.ymovefactor, self.xmovefactor)
+                                    self.dx = math.cos(self.Angle) * 1.5
+                                    self.dy = math.sin(self.Angle) * 1.5
+                                    # should consider wether princess tower is destroyed or not
+                                    self.Animation.rect.move_ip(self.dx, self.dy)
+                                    self.HitAnimation.rect.move_ip(self.dx, self.dy)
+                                    self.rightmovecounter=1
+        #consider splash elixir effect when they are destroyed
+
+            #hit
+            #waghti ba ye sarbaze dige dargir mishan
+            else:
+                self.HitGroup.draw(screen)
+
+            #waghti be tower miresan
+            if self.side=='Down':
+                #towere payin chap
+                if 0<=self.x<=225:
+                    if self.Animation.rect.center == (130,402):
+                        self.wetheranimate_counter=False
+                        self.HitGroup.draw(screen)
+                #towere payin rast
+                else:
+                    if self.Animation.rect.center ==(408,402):
+                        self.wetheranimate_counter=False
+                        self.HitGroup.draw(screen)
+            else:
+>>>>>>> 8bb8e1e6bbd96ee22e7747391b86155d1f29b2d9
                 #towere bala chap
                 if 0<=self.x<=225:
                     if self.Animation.rect.center == (130,210):
@@ -432,6 +567,9 @@ class Dragon(Units):
                     if self.Animation.rect.center ==(408,210):
                         self.wetheranimate_counter=False
                         self.HitGroup.draw(screen)
+<<<<<<< HEAD
+>>>>>>> 8bb8e1e6bbd96ee22e7747391b86155d1f29b2d9
+=======
 >>>>>>> 8bb8e1e6bbd96ee22e7747391b86155d1f29b2d9
 
 class Giant(Units):
@@ -445,16 +583,20 @@ class Giant(Units):
         self.rightmovecounter = 0
         #
 <<<<<<< HEAD
+<<<<<<< HEAD
 
         self.range = 30
         self.shoot_type = 'Ground'
         self.target_type = 'Building'
 =======
 >>>>>>> 8bb8e1e6bbd96ee22e7747391b86155d1f29b2d9
+=======
+>>>>>>> 8bb8e1e6bbd96ee22e7747391b86155d1f29b2d9
         self.elixir_cost = 4
         self.target_type = 'Building'
 
 
+<<<<<<< HEAD
         # load image
         self.x = x
         self.y = y
@@ -522,6 +664,8 @@ class Hogrider(Units):
         self.target_type = 'Building'
 
 
+=======
+>>>>>>> 8bb8e1e6bbd96ee22e7747391b86155d1f29b2d9
         # load image
         self.x = x
         self.y = y
@@ -554,6 +698,63 @@ class Hogrider(Units):
         self.Group = pygame.sprite.Group(self.Animation)
         if self.side =='Down':
             Units_Animations_list[1].append(self.Animation)
+<<<<<<< HEAD
+=======
+        if self.side =='Up' :
+            Units_Animations_list[0].append(self.Animation)
+        #____________________DMG_________________#
+        self.Animation.range=30
+        self.Animation.stat = 'Alive'
+        self.Animation.hitpoint = 300
+        self.Animation.hp = self.Animation.hitpoint
+        self.Animation.damage = 2
+class Hogrider(Units):
+    def __init__(self, x, y, side):
+        global Units_Animations_list
+        # needed for all troops classes
+        # attributes
+        self.side = side
+        # for movement
+        self.leftmovecounter = 0
+        self.rightmovecounter = 0
+        #
+        self.elixir_cost = 4
+        self.target_type = 'Building'
+
+
+        # load image
+        self.x = x
+        self.y = y
+        self.Goimages = []
+        self.Hitimages = []
+        self.wetheranimate_counter = True
+        if self.side =='Down':
+            for i in range(1,9):
+                self.img= pygame.image.load("Assets\\chr_hogrider_out\\%s_%s.png"%(i,self.side))
+                self.img=pygame.transform.scale(self.img,(90,90))
+                self.Goimages.append(self.img)
+            for i in range(1,11):
+                self.img2= pygame.image.load("Assets\\chr_hogrider_out\\%s_Hit_%s.png"%(i,self.side))
+                self.img2 = pygame.transform.scale(self.img2, (90, 90))
+                self.Hitimages.append(self.img2)
+        if self.side =='Up':
+            for i in range(1,9):
+                self.img= pygame.image.load("Assets\\chr_hogrider_out\\%s_%s.png"%(i,self.side))
+                self.img=pygame.transform.scale(self.img,(90,90))
+                self.Goimages.append(self.img)
+            for i in range(1,11):
+                self.img2 = pygame.image.load("Assets\\chr_hogrider_out\\%s_Hit_%s.png"%(i,self.side))
+                self.img2 = pygame.transform.scale(self.img2, (90, 90))
+                self.Hitimages.append(self.img2)
+        self.Animation = AnimatedSprite((self.x, self.y), self.Goimages)
+        self.HitAnimation = AnimatedSprite((self.Animation.rect.center[0] - 50, self.Animation.rect.center[1] - 80),
+                                           self.Hitimages)
+        self.HitGroup = pygame.sprite.Group(self.HitAnimation)
+
+        self.Group = pygame.sprite.Group(self.Animation)
+        if self.side =='Down':
+            Units_Animations_list[1].append(self.Animation)
+>>>>>>> 8bb8e1e6bbd96ee22e7747391b86155d1f29b2d9
         if self.side =='Up' :
             Units_Animations_list[0].append(self.Animation)
         #____________________DMG_________________#
@@ -572,6 +773,7 @@ class Prince(Units):
         # for movement
         self.leftmovecounter = 0
         self.rightmovecounter = 0
+<<<<<<< HEAD
 <<<<<<< HEAD
         #
         self.range = 30
@@ -638,6 +840,10 @@ class Knight(Units):
         self.rightmovecounter = 0
         self.target_type = 'Any'
         self.elixir_cost = 2
+=======
+        self.target_type = 'Any'
+        self.elixir_cost = 3
+>>>>>>> 8bb8e1e6bbd96ee22e7747391b86155d1f29b2d9
         # load image
         self.x = x
         self.y = y
@@ -676,6 +882,61 @@ class Knight(Units):
         #--------------------------DAMAGE------------------------------#
         self.Animation.range=30
         self.Animation.stat='Alive'
+<<<<<<< HEAD
+=======
+        self.Animation.hitpoint = 400
+        self.Animation.hp=self.Animation.hitpoint
+        self.Animation.damage = 3
+class Knight(Units):
+    def __init__(self,x,y,side):
+        global Units_Animations_list
+        #needed for all troops classes
+        #attributes
+        self.side = side
+        # for movement
+        self.leftmovecounter = 0
+        self.rightmovecounter = 0
+        self.target_type = 'Any'
+        self.elixir_cost = 2
+        # load image
+        self.x = x
+        self.y = y
+        self.Goimages = []
+        self.Hitimages = []
+
+        self.wetheranimate_counter = True
+        if self.side =='Down':
+            for i in range(1,15):
+                self.img= pygame.image.load("Assets\\chr_knight_out\\%s_%s.png"%(i,self.side))
+                self.img=pygame.transform.scale(self.img,(90,90))
+                self.Goimages.append(self.img)
+                self.img2= pygame.image.load("Assets\\chr_knight_out\\%s_Hit.png"%(i))
+                self.img2 = pygame.transform.scale(self.img2, (90, 90))
+                self.Hitimages.append(self.img2)
+        if self.side =='Up':
+            for i in range(1,13):
+                self.img= pygame.image.load("Assets\\chr_knight_out\\%s_%s.png"%(i,self.side))
+                self.img=pygame.transform.scale(self.img,(90,90))
+                self.Goimages.append(self.img)
+            for i in range(1,12):
+                self.img2 = pygame.image.load("Assets\\chr_knight_out\\%s_Hit_%s.png"%(i,self.side))
+                self.img2 = pygame.transform.scale(self.img2, (90, 90))
+                self.Hitimages.append(self.img2)
+        self.Animation = AnimatedSprite((self.x, self.y), self.Goimages)
+        self.HitAnimation = AnimatedSprite((self.Animation.rect.center[0] - 50, self.Animation.rect.center[1] - 70),
+                                           self.Hitimages)
+        self.HitGroup = pygame.sprite.Group(self.HitAnimation)
+
+        self.Group = pygame.sprite.Group(self.Animation)
+
+        if self.side =='Down':
+            Units_Animations_list[1].append(self.Animation)
+        if self.side =='Up' :
+            Units_Animations_list[0].append(self.Animation)
+        #--------------------------DAMAGE------------------------------#
+        self.Animation.range=30
+        self.Animation.stat='Alive'
+>>>>>>> 8bb8e1e6bbd96ee22e7747391b86155d1f29b2d9
         self.Animation.hitpoint = 300
         self.Animation.hp=self.Animation.hitpoint
         self.Animation.damage = 2
@@ -786,6 +1047,9 @@ class Goblin(Units):
         self.Animation.hitpoint = 100
         self.Animation.hp=self.Animation.hitpoint
         self.Animation.damage = 1
+<<<<<<< HEAD
+>>>>>>> 8bb8e1e6bbd96ee22e7747391b86155d1f29b2d9
+=======
 >>>>>>> 8bb8e1e6bbd96ee22e7747391b86155d1f29b2d9
 def drawTowerUp():
     Enm_tower = pygame.image.load("Assets\\Towers\\Enm_town_main.png")
@@ -1030,6 +1294,7 @@ def main():
     '''
     Troops'''
 <<<<<<< HEAD
+<<<<<<< HEAD
     P = Prince(210, 100, 'Down')
     G = Giant(235, 120, 'Down')
     S = Giant(215, 320, 'Up')
@@ -1042,6 +1307,8 @@ def main():
     DHB_Right_En = Healthbar(ELH=1000, Sc=17.5, x=356, y=70)
     DHB_Main_En = Healthbar(ELH=1000, Sc=17.5, x=223, y=0)
 =======
+=======
+>>>>>>> 8bb8e1e6bbd96ee22e7747391b86155d1f29b2d9
     P=Minipekka(210,100,'Down')
     G=Goblin(235,120,'Down')
     S=Goblin(215,320,'Up')
