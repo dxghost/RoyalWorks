@@ -9,6 +9,7 @@ import chr_giant_out as Giant
 import chr_mini_PEKKA_out as PEKKA
 import chr_knight_out as KNIGHT
 import cannon
+import bullet as BULLET
 
 pygame.init()
 
@@ -382,8 +383,9 @@ def loadtowerimage():
     screen.blit(cannon_scaled_left, (39, 390))
     screen.blit(cannon_scaled_right, (307, 390))
     screen.blit(en_cannon_scaled, (153, 0))
-    # screen.blit(cannon_dir, (250, 500))
-    # screen.blit(en_cannon_dir, (250, 100))
+    screen.blit(cannon_scaled_left, (39, 78))
+    screen.blit(cannon_scaled_right, (307, 78))
+
 
 
 # --------------------------------------------------------------------
@@ -465,14 +467,36 @@ def main():
     knight = KNIGHT.AnimatedSprite(dad_knight.getposition, KNIGHT.load_images())
     up_knight = pygame.sprite.Group(knight)
 
-    cannon_sp_main_self = cannon.AnimatedSprite((173, 385), cannon.load_images(130), 130)
+    cannon_sp_main_self = cannon.AnimatedSprite((173, 385), cannon.load_images(130), 130, False)
     up_cannon_sp_main_self = pygame.sprite.Group(cannon_sp_main_self)
 
-    cannon_sp_left_self = cannon.AnimatedSprite((55, 349), cannon.load_images(100), 100)
+    cannon_sp_left_self = cannon.AnimatedSprite((55, 349), cannon.load_images(100), 100, False)
     up_cannon_sp_left_self = pygame.sprite.Group(cannon_sp_left_self)
 
-    cannon_sp_right_self = cannon.AnimatedSprite((320, 349), cannon.load_images(100), 100)
+    cannon_sp_right_self = cannon.AnimatedSprite((320, 349), cannon.load_images(100), 100, False)
     up_cannon_sp_right_self = pygame.sprite.Group(cannon_sp_right_self)
+
+    cannon_sp_main_enemy = cannon.AnimatedSprite((173, -32), cannon.load_images(130), 130, True)
+    up_cannon_sp_main_enemy = pygame.sprite.Group(cannon_sp_main_enemy)
+
+    cannon_sp_left_enemy = cannon.AnimatedSprite((55, 35), cannon.load_images(100), 100, True)
+    up_cannon_sp_left_enemy = pygame.sprite.Group(cannon_sp_left_enemy)
+
+    cannon_sp_right_enemy = cannon.AnimatedSprite((318, 35), cannon.load_images(100), 100, True)
+    up_cannon_sp_right_enemy = pygame.sprite.Group(cannon_sp_right_enemy)
+
+    # --------------------------------------------------------------------
+
+    bullet_right = BULLET.Bullet((380, 409))
+    bullet_left = BULLET.Bullet((115, 409))
+    bullet_main = BULLET.Bullet((246, 467))
+
+    bullet_left_enemy = BULLET.Bullet((112, 87))
+    bullet_main_enemy = BULLET.Bullet((255, 40))
+    bullet_right_enemy = BULLET.Bullet((380, 92))
+
+
+
 
     # --------------------------------------------------------------------
 
@@ -504,6 +528,8 @@ def main():
 
     timeSC = pygame.image.load('Assets\\EXir\\ui_sprite_476.png')
     timeSC = pygame.transform.scale(timeSC, (55, 25))
+
+    z = 50
 
     while running:
         screen.fill((0, 0, 0))
@@ -628,31 +654,60 @@ def main():
 
         # --------------------------------------------------------------------
 
+        bullet_right.movebullet(z, 300)
+        bullet_left.movebullet(z, 300)
+        bullet_main.movebullet(z, 300)
+
+        bullet_right_enemy.movebulletenemy(z, 300)
+        bullet_left_enemy.movebulletenemy(z, 300)
+        bullet_main_enemy.movebulletenemy(z, 300)
 
         up_cannon_sp_main_self.update(dt)
         up_cannon_sp_main_self.draw(screen)
 
-
         up_cannon_sp_left_self.update(dt)
         up_cannon_sp_left_self.draw(screen)
-
 
         up_cannon_sp_right_self.update(dt)
         up_cannon_sp_right_self.draw(screen)
 
-        cannon_sp_right_self.x = 50
+        up_cannon_sp_main_enemy.update(dt)
+        up_cannon_sp_main_enemy.draw(screen)
+
+        up_cannon_sp_left_enemy.update(dt)
+        up_cannon_sp_left_enemy.draw(screen)
+
+        up_cannon_sp_right_enemy.update(dt)
+        up_cannon_sp_right_enemy.draw(screen)
+
+
+        cannon_sp_right_self.x = z
         cannon_sp_right_self.y = 300
 
-        cannon_sp_main_self.x = 50
+        cannon_sp_main_self.x = z
         cannon_sp_main_self.y = 300
 
-        cannon_sp_left_self.x = 50
+        cannon_sp_left_self.x = z
         cannon_sp_left_self.y = 300
 
-        pygame.draw.rect(screen, (255, 255, 255), (50, 300, 40, 50))
-        print(cannon_sp_main_self.degree)
-        print(cannon_sp_left_self.degree)
+        #
 
+        cannon_sp_right_enemy.x = z
+        cannon_sp_right_enemy.y = 300
+
+        cannon_sp_main_enemy.x = z
+        cannon_sp_main_enemy.y = 300
+
+        cannon_sp_left_enemy.x = z
+        cannon_sp_left_enemy.y = 300
+
+        pygame.draw.rect(screen, (255, 255, 255), (246, 467, 5, 5))
+        pygame.draw.rect(screen, (255, 0  , 255), (115, 409, 5, 5))
+        pygame.draw.rect(screen, (255, 255, 255), (380, 409, 5, 5))
+
+        pygame.draw.rect(screen, (255, 255, 255), (z, 300, 20, 20))
+
+        z += 1
         pygame.display.update()
 
 
